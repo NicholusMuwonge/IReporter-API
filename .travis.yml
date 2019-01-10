@@ -9,7 +9,7 @@ services:
 before_script:
   - psql -c 'create database trying;' -U postgres
 script:
-  - pytest api/tests/test_api.py/ --cov
+  - pytest tests/test_api.py --cov
   - coverage report
   - coveralls
 after success:
