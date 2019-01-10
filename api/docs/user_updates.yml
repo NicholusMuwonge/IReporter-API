@@ -1,0 +1,30 @@
+User updates
+---
+tags:
+  - Updates (User routes)
+parameters:
+  - name: Authorization
+    in: header
+    description: Authorization header required for user authentication
+    required: true
+    type: string
+  - name: parcel_id
+    in: path
+    description: This is required for getting a single parcel
+  - name: body
+    in: body
+    required: true
+    type: string
+    description: This route is used to perform user actions of canceling a parcel and updating the destination
+responses:
+  200:
+    description: Parcel has been updated
+security:
+  - JWT:
+    description: Pass in jwt token i.e Bearer <jwt>
+    type: apiKey
+    scheme: bearer
+    name: Authorization
+    in: header
+    template: "Bearer {apiKey}"
+    bearerFormat: JWT

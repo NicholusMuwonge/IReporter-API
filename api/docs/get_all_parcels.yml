@@ -1,0 +1,25 @@
+Get Parcels
+---
+tags:
+  - Parcels (Admin routes)
+parameters:
+  - name: Authorization
+    in: header
+    description: Authorization header required for user authentication
+    required: true
+    type: string
+  - name: parcel_id
+    in: path
+    description: This route is required for getting a single parcel
+responses:
+  200:
+    description: Successful
+security:
+  - JWT:
+    description: Pass in jwt token i.e Bearer <jwt>
+    type: apiKey
+    scheme: bearer
+    name: Authorization
+    in: header
+    template: "Bearer {apiKey}"
+    bearerFormat: JWT

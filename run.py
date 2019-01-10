@@ -1,30 +1,31 @@
+"""
+app root of the api endpoints. this module runs the application
+"""
+
 from flask import Flask
+from api.views.routes import Routes
 from flask_jwt_extended import JWTManager
-from app.database.db import database
-from app.routes import routes
-from app import app
+from api.models.database import DatabaseConnection
+# from flasgger import Swagger
 
-
-# app=Flask(__name__)
-routes.endpoints(app)
+app = Flask(__name__)
+# Swagger(app)
+app.env = 'development'
+Routes.generate(app)
 app.config['JWT_SECRET_KEY'] = 'nicks'
-jwt=JWTManager(app)
+jwt = JWTManager(app)
 
 
 @app.before_first_request
 def admin():
-    data = database()
+    data = DatabaseConnection()
     data.check_admin()
 
 
+@app.route('/')
+def index():
+    return 'Welcome ' 
 
 
-
-
-
-
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

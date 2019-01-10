@@ -1,0 +1,27 @@
+Post Parcels
+---
+tags:
+  - Parcels (User routes)
+parameters:
+  - name: Authorization
+    in: header
+    description: Authorization header required for user authentication
+    required: true
+    type: string
+  - name: body
+    in: body
+    required: true
+    type: string
+    description: This route is used by a user to post a parcel delivery order
+responses:
+  201:
+    description: You have posted a parcel delivery order
+security:
+  - JWT:
+    description: Pass in jwt token i.e Bearer <jwt>
+    type: apiKey
+    scheme: bearer
+    name: Authorization
+    in: header
+    template: "Bearer {apiKey}"
+    bearerFormat: JWT
