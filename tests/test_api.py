@@ -2,13 +2,14 @@
 Tests module
 """
 from flask import json
+from flask_jwt_extended import get_csrf_token,jwt_refresh_token_required,jwt_required
 
 import unittest
 
 from run import app
 
 
-class TestSendIT(unittest.TestCase):
+class TestIt(unittest.TestCase):
     """
     Tests run for the api endpoints
     """
@@ -16,6 +17,11 @@ class TestSendIT(unittest.TestCase):
     def setUp(self):
         self.app = app
         self.client = self.app.test_client
+
+    def test_home(self):
+        item=self.client().get('/',content_type='application/json')
+        self.assertEqual(item.status_code,200)
+        
 
     def register_user(self, user_name=None, email=None,  user_password=None):
         return self.client().post(
@@ -95,7 +101,7 @@ class TestSendIT(unittest.TestCase):
         Test for empty fields during user registration
         :return:
         """
-        register = self.register_user(' ', 'apple@gmail.com', 'acireba')
+        register = self.register_user(' ', 'nicks@gmail.com', 'nicksbro')
         response_data = json.loads(register.data.decode())
         self.assertTrue(response_data['status'], 'fail')
         self.assertTrue(response_data['error_message'], 'Some fields have no data')
@@ -108,7 +114,7 @@ class TestSendIT(unittest.TestCase):
         Test for password less than 5 characters
         :return:
         """
-        register = self.register_user('Apple', 'apple@gmail.com',  'mat')
+        register = self.register_user('Yapsis', 'nick@gmail.com',  'mat')
         response_data = json.loads(register.data.decode())
         self.assertTrue(response_data['status'], 'fail')
         self.assertTrue(response_data['error_message'],
@@ -122,7 +128,7 @@ class TestSendIT(unittest.TestCase):
         Test for registration with invalid email
         :return:
         """
-        register = self.register_user('Apple', 'apple@gmail',  'acireba')
+        register = self.register_user('Yapsis', 'nicks@gmail',  'nicksbro')
         response_data = json.loads(register.data.decode())
         self.assertTrue(response_data['status'], 'fail')
         self.assertTrue(response_data['error_message'], 'User email {0} is wrong,'
@@ -253,26 +259,27 @@ class TestSendIT(unittest.TestCase):
 
     # ....................Testing parcels endpoints.............................................. #
 
-    # def test_post_record(self):
-    #     """
-    #     Test for posting a parcel delivery order
-    #     :return:
-    #     """
-    #     # user signup
-    #     self.register_user('Stella', 'ste@gmail.com', 'acireba')
+    def test_post_record(self):
+        """
+        Test for posting a record 
+        :return:
+        """
+        # user signup
+        self.register_user('Apple', 'apple@gmail.com',  'acireba')
 
-    #     # user login
-    #     login = self.login_user( 'Stella','acireba')
+        # user login
+        login = self.login_user( 'Apple','acireba')
 
-    #     # Add parcel
-    #     add_parcel = self.post_record("Marvin", "Bunga", "Gaba",
-    #                                           json.loads(login.data.decode())['access_token'])
+        # Add parcel
+        add_record= self.post_record("Marvin", "Bunga", "Gaba",
+                                              json.loads(login.data.decode())['access_token'])
 
-    #     data = json.loads(add_parcel.data.decode())
+        data = json.loads(add_record.data.decode())
 
-    #     self.assertTrue(data['message'], 'Successfully posted a parcel delivery order')
-    #     self.assertTrue(data['data'])
-    #     self.assertEqual(add_parcel.status_code, 201)
+        self.assertTrue(data['message'], 'Successfully posted a parcel delivery order')
+        self.assertTrue(add_record.content_type,'application/json')
+        # self.assertTrue(data['data'])
+        # self.assertEqual(add_record.status_code, 201)
 
     def test_post_record_with_empty_fields(self):
         """
