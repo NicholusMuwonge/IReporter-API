@@ -2,7 +2,7 @@
 app root of the api endpoints. this module runs the application
 """
 
-from flask import Flask
+from flask import Flask,json,jsonify
 from api.views.routes import Routes
 from flask_jwt_extended import JWTManager
 from api.models.database import DatabaseConnection
@@ -24,7 +24,7 @@ def admin():
 
 @app.route('/')
 def index():
-    return 'Welcome ' 
+    return 'Welcome dear concerned citizen'
 
 
 if __name__ == '__main__':

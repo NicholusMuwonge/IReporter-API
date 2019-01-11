@@ -18,8 +18,8 @@ class DatabaseConnection:
             # load_dotenv()
             # database_url = os.getenv("DATABASE_URL")
             # self.connection = psycopg2.connect(database_url)
-            self.connection = psycopg2.connect(host="Nicks", database="trying", user="postgres",
-            port="5432", password="nicks")
+            self.connection = psycopg2.connect(host="", database="trying", user="postgres",
+            port="5432", password="")
             self.connection.autocommit = True
             self.cursor = self.connection.cursor()
             self.dict_cursor = self.connection.cursor(cursor_factory=RealDictCursor)
