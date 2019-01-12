@@ -18,7 +18,7 @@ class DatabaseConnection:
             # load_dotenv()
             # database_url = os.getenv("DATABASE_URL")
             # self.connection = psycopg2.connect(database_url)
-            self.connection = psycopg2.connect(host="", database="trying", user="postgres",
+            self.connection = psycopg2.connect(host="localhost", database="trying", user="postgres",
             port="5432", password="")
             self.connection.autocommit = True
             self.cursor = self.connection.cursor()
@@ -245,7 +245,7 @@ class DatabaseConnection:
         method to set admin to true which gives a user admin privileges.
         :return:
         """
-        self.cursor.execute("UPDATE users SET admin = 'TRUE' WHERE user_id = 1")
+        self.cursor.execute("UPDATE user_list SET admin = 'TRUE' WHERE user_id = 1")
 
 
 DatabaseConnection().create_tables()
