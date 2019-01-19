@@ -278,8 +278,8 @@ class TestIt(unittest.TestCase):
 
         self.assertTrue(data['message'], 'Successfully posted a parcel delivery order')
         self.assertTrue(add_record.content_type,'application/json')
-        # self.assertTrue(data['data'])
-        # self.assertEqual(add_record.status_code, 201)
+        self.assertTrue(data['data'])
+        self.assertEqual(add_record.status_code, 201)
 
     def test_post_record_with_empty_fields(self):
         """
@@ -345,13 +345,13 @@ class TestIt(unittest.TestCase):
 
         # Add parcel order
         print(login.data.decode())
-        add_parcel = self.post_record('1000', "Bunga", "Gaba",
+        add_parcel = self.post_record('', "Bunga", "Gaba",
                                               json.loads(login.data.decode())['access_token'])
 
         data = json.loads(add_parcel.data.decode())
 
         self.assertTrue(data['status'], 'fail')
-        # self.assertTrue(data['error_message'], 'Please use character strings')
-        # self.assertFalse(data['data'])
+        self.assertTrue(data['error_message'], 'Please use character strings')
+        self.assertFalse(data['data'])
         self.assertTrue(add_parcel.content_type, 'application/json')
-        # self.assertEqual(add_parcel.status_code, 400)
+        self.assertEqual(add_parcel.status_code, 400)
