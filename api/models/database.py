@@ -15,10 +15,8 @@ class DatabaseConnection:
                 host="ec2-54-163-230-178.compute-1.amazonaws.com", database="dojl24m42btue", user="wzkwuzmzzsvthh",
                 port="5432", password="1cf1d11b7d7b44d7b999b36797814916c24029f8b75e7b9644252232423d5437")
         else:
-            # load_dotenv()
-            # database_url = os.getenv("DATABASE_URL")
-            # self.connection = psycopg2.connect(database_url)
-            self.connection = psycopg2.connect(host="localhost", database="trying", user="postgres",
+            
+            self.connection = psycopg2.connect(host="localhost", database="db_test", user="postgres",
             port="5432", password="")
             self.connection.autocommit = True
             self.cursor = self.connection.cursor()
@@ -45,7 +43,7 @@ class DatabaseConnection:
             CREATE TABLE IF NOT EXISTS "records" (
                     record_no SERIAL NOT NULL PRIMARY KEY,
                     user_id INTEGER NOT NULL,
-                    FOREIGN KEY (user_id) REFERENCES "users" (user_id)
+                    FOREIGN KEY (user_id) REFERENCES "user_list" (user_id)
                     ON UPDATE CASCADE ON DELETE CASCADE,
                     record_title VARCHAR(255) NOT NULL,
                     record_geolocation VARCHAR(255) NOT NULL,
@@ -116,7 +114,7 @@ class DatabaseConnection:
         check_email = self.cursor.fetchone()
         return check_email
 
-    def post_record(self, record_title,record_geolocation,record_type,status, user_id,record_no):
+    def post_record(self, record_title,record_geolocation,record_type, user_id):
         """
         insert record details into the table records
         :param record_title:
@@ -126,10 +124,10 @@ class DatabaseConnection:
         :param user_id:
         :return:
         """
-        record_posted = """INSERT INTO records (record_title,record_geolocation,record_type,status, user_id,record_no)
-                    VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5});""".format(record_title,record_geolocation,record_type,status, user_id,record_no)
+        record_posted = """INSERT INTO records (record_title,record_geolocation,record_type, user_id)
+                    VALUES ('{0}', '{1}', '{2}', '{3}');""".format(record_title,record_geolocation,record_type, user_id)
         self.cursor.execute(record_posted)
-        return jsonify({'message':'record posted successfully'})
+        return ('created')
 
     def get_all_records(self):
         """
@@ -147,10 +145,10 @@ class DatabaseConnection:
         :param record_no:
         :return:
         """
-        one = """SELECT * FROM records WHERE record_no = '{}';""".format(record_no)
+        one = "SELECT * FROM records WHERE record_no = '{}';".format(record_no)
         self.dict_cursor.execute(one)
         record = self.dict_cursor.fetchone()
-        return record
+        return jsonify(record)
 
     def get_records_for_specific_users(self, user_id):
         """
@@ -158,10 +156,10 @@ class DatabaseConnection:
         :param user_id:
         :return:
         """
-        user_records = """SELECT * FROM records WHERE user_id ='{}';""".format(user_id)
+        user_records = "SELECT * FROM records WHERE user_id ='{}'".format(user_id)
         self.dict_cursor.execute(user_records)
         get_records = self.dict_cursor.fetchall()
-        return get_records
+        return jsonify(get_records)
 
     def update_record_geolocation(self,record_geolocation,record_no):
         """
@@ -170,7 +168,7 @@ class DatabaseConnection:
         :param record_no:
         :return:
         """
-        record_update = """UPDATE records SET record_geolocation = '{}' WHERE record_no = '{}';""".format(record_geolocation,record_no)
+        record_update = "UPDATE records SET record_geolocation = '{}' WHERE record_no = '{}'".format(record_geolocation,record_no)
         self.cursor.execute(record_update)
         return True
 
@@ -181,7 +179,7 @@ class DatabaseConnection:
         :param record_no:
         :return:
         """
-        update = """UPDATE records SET status = '{}' WHERE record_no = '{}';""".format(status,record_no)
+        update = "UPDATE records SET status = '{}' WHERE record_no = '{}'".format(status,record_no)
         self.cursor.execute(update)
 
     def change_status(self, status, record_no):
@@ -233,7 +231,7 @@ class DatabaseConnection:
         :param record_no:
         :return:
         """
-        records="""(DELETE * FROM records WHERE record_no='{}';).format(record_no)"""
+        records="DELETE FROM records WHERE record_no='{}'".format(record_no)
         delete=self.cursor.execute(records)
         if delete:
             return ({"message":"item successfully deleted"})

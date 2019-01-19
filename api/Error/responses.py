@@ -36,6 +36,16 @@ class Error_message:
         return jsonify(response_object), 400
 
     @staticmethod
+    def non_apprpriate_record_type():
+        response_object = {
+            'status': 'fail',
+            'error_message': 'Invalid record type',
+            'data': False
+        }
+        return jsonify(response_object), 400
+
+
+    @staticmethod
     def missing_key(keys):
         response_object = {
             'status': 'fail',
@@ -100,15 +110,6 @@ class Error_message:
             "data": req
 
         }), 400
-
-    # @staticmethod
-    # def invalid_phone_number():
-    #     req = request.get_json()
-    #     return jsonify({"error_message": "Contact {0} is wrong. should be in"
-    #                                      " the form, (070******) and between 10 and 13 "
-    #                                      "digits".format(req['phone_number']),
-    #                     "data": req
-    #                     }), 400
 
     @staticmethod
     def username_already_exists():

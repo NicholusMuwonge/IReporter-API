@@ -16,11 +16,11 @@ class Record:
         self.record_geolocation = record_geolocation
         self.record_type = record_type
         self.status = 'Pending'
-        # self.order_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.record_placement_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         
 
-    def post_record(self,record_type=None, record_title=None, record_geolocation=None, status=None, user_id=None,record_no=None):
+    def post_record(self,record_type=None, record_title=None, record_geolocation=None, user_id=None):
         """
         Make new parcel delivery order
         :param receivers_name:
@@ -30,6 +30,6 @@ class Record:
         :param user_id:
         :return:
         """
-        record_placed = self.db.post_record(record_type, record_title, record_geolocation, status, user_id,record_no)
+        record_placed = self.db.post_record(record_type, record_title, record_geolocation, user_id)
 
         return record_placed

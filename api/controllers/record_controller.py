@@ -32,7 +32,7 @@ class Record_logic(MethodView):
         :return:
         """
         user = get_jwt_identity()
-        admin = user[4]
+        admin = user[3]
         user_id = user[0]
 
         if user_id and admin == "FALSE":
@@ -42,6 +42,7 @@ class Record_logic(MethodView):
 
             if not set(keys).issubset(set(post_data)):
                 return Error_message.missing_fields(keys)
+            
 
             try:
                 self.record_title = post_data['record_title'].strip()
@@ -54,6 +55,9 @@ class Record_logic(MethodView):
 
             if not self.record_title or not self.record_geolocation or not self.record_type :
                 return Error_message.empty_data_fields()
+            
+            # if not self.record_type == 'redflag' or not self.record_type == 'intervention':
+            #     return Error_message.non_apprpriate_record_type()
             # elif Verification.check_string_of_numbers(self.receivers_name) or \
             #         val.check_string_of_numbers(self.pickup_location) or \
             #         val.check_string_of_numbers(self.destination):
@@ -61,7 +65,7 @@ class Record_logic(MethodView):
             # elif self.weight < 0:
             #     return Error_message.negative_number()
 
-            new_record = self.record.post_record(self.record_type,self.record_geolocation,self.record_title,str(user_id),self.status)
+            new_record = self.record.post_record(self.record_type,self.record_geolocation,self.record_title,str(user_id))
             response_object = {
                 'message': 'Successfully posted a new record ',
                 'data': new_record
@@ -79,7 +83,7 @@ class Record_logic(MethodView):
         """
         user = get_jwt_identity()
         user_id = user[0]
-        admin = user[4]
+        admin = user[3]
 
         if admin != "FALSE" and user_id:
 
@@ -157,14 +161,14 @@ class Record_logic(MethodView):
 
     @jwt_required
     # @swag_from('../docs/admin_updates.yml')
-    def put(self, record_no,record_geolocation):
+    def put(self, record_no=None,record_geolocation=None):
         """
         Method to update the record  status
         :param record_no:
         :return:
         """
         user = get_jwt_identity()
-        admin = user[4]
+        admin = user[3]
         user_id = user[0]
 
         if admin == "TRUE" and user_id:
@@ -172,13 +176,9 @@ class Record_logic(MethodView):
             post_data = request.get_json()
 
             key = "status"
-            
-
             status = ['Approved','Denied']
 
-            
             if key in post_data:
-
                 try:
                     status = post_data['status'].strip()
                 except AttributeError:
@@ -195,24 +195,8 @@ class Record_logic(MethodView):
                         'message': 'Status has been updated successfully'
                     }
                     return jsonify(response_object), 202
-        elif admin != "TRUE" and user_id:
-            key_1 = "record_geolocation"
-            if key_1 in post_data:
-                try:
-                    record_geolocation = post_data['record_geolocation'].strip()
-                except AttributeError:
-                    return Error_message.invalid_data_format()
-                if not self.val.validate_string_input(record_geolocation):
-                    return Error_message.invalid_input()
-                if not record_geolocation:
-                    return Error_message.empty_data_fields()
-                response= self.data.update_record_geolocation(record_geolocation, record_no)
-                if response:
-                    response_object = {
-                        'message': 'Status has been updated successfully'
-                    }
-                    return jsonify(response_object), 202
-
+        
+            
         return Error_message.denied_permission()
 
 
