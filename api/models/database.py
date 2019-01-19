@@ -2,8 +2,8 @@
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import Flask,json,jsonify # test db db for travis , discover flask configurations
-# from dotenv import load_dotenv
+from flask import Flask, json, jsonify # test db db for travis , discover flask configurations
+from dotenv import load_dotenv
 
 
 class DatabaseConnection:

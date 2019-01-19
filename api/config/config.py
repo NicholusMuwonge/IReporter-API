@@ -9,7 +9,7 @@ class Config:
     """
     DEBUG = False
     TESTING = False
-    SECRET_KEY = "apple123"
+    SECRET_KEY = "nicksbro"
 
 
 class DevelopmentConfig(Config):
@@ -19,7 +19,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = True
     ENV = 'development'
-    SECRET_KEY = 'apple123'
+    SECRET_KEY = 'nicksbro'
 
 
 class TestingConfig(Config):
@@ -28,4 +28,4 @@ class TestingConfig(Config):
     """
     DEBUG = True
     TESTING = True
-    SECRET_KEY = 'apple123'
+    SECRET_KEY = 'nicksbro'
