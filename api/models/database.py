@@ -2,7 +2,7 @@
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import Flask,json,jsonify
+from flask import Flask,json,jsonify # test db db for travis , discover flask configurations
 # from dotenv import load_dotenv
 
 
@@ -12,8 +12,8 @@ class DatabaseConnection:
 
         if os.getenv("HEROKU_ENV") == 'heroku_database':
             self.connection = psycopg2.connect(
-                host="ec2-54-163-230-178.compute-1.amazonaws.com", database="dojl24m42btue", user="wzkwuzmzzsvthh",
-                port="5432", password="1cf1d11b7d7b44d7b999b36797814916c24029f8b75e7b9644252232423d5437")
+                host="ec2-54-225-227-125.compute-1.amazonaws.com", database="d95nn0mi29nlqj", user="mretfseraxhfos",
+                port="5432", password="50f7e8f2d88a9fd05fe86691b7ae23d2529577ed0bb1a10ab6a6154581f404a3")
         else:
             
             self.connection = psycopg2.connect(host="localhost", database="trying", user="postgres",
