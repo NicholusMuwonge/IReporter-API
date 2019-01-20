@@ -63,7 +63,7 @@ class Record_logic(MethodView):
                 return Error_message.invalid_input()
             new_record = self.record.post_record(self.record_type,self.record_geolocation,self.record_title,str(user_id))
             response_object = {
-                'message': 'Successfully posted a new record ',
+                'message': 'Successfully posted a new record',
                 'data': new_record
             }
             return jsonify(response_object), 201

@@ -137,19 +137,6 @@ class TestIt(unittest.TestCase):
         self.assertTrue(register.content_type == "application/json")
         self.assertEqual(register.status_code, 400)
 
-    # def test_invalid_phone_number(self):
-    #     """
-    #     testing invalid phone_number
-    #     :return:
-    #     """
-    #     register = self.register_user('Apple', 'app0@gmail.com', '070419', 'acireba')
-    #     received_data = json.loads(register.data.decode())
-    #     self.assertTrue(received_data['error_message'], 'Contact {0} is wrong. should be in the form, (070*******)'
-    #                                                     'and between 10 and 13 digits')
-    #     self.assertTrue(received_data['data'])
-    #     self.assertTrue(register.content_type, 'application/json')
-    #     self.assertEqual(register.status_code, 400)
-
     def test_invalid_user_name(self):
         """
         testing invalid username
@@ -276,7 +263,7 @@ class TestIt(unittest.TestCase):
 
         data = json.loads(add_record.data.decode())
 
-        self.assertTrue(data['message'], 'Successfully posted a parcel delivery order')
+        self.assertTrue(data['message'], 'Successfully posted a new record')
         self.assertTrue(add_record.content_type,'application/json')
         self.assertTrue(data['data'])
         self.assertEqual(add_record.status_code, 201)
