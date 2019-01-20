@@ -21,9 +21,9 @@ class DatabaseConnection:
             
             self.connection = psycopg2.connect(host="localhost", database="trying", user="postgres",
             port="5432", password="")
-            self.connection.autocommit = True
-            self.cursor = self.connection.cursor()
-            self.dict_cursor = self.connection.cursor(cursor_factory=RealDictCursor)
+        self.connection.autocommit = True
+        self.cursor = self.connection.cursor()
+        self.dict_cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
     def create_tables(self):
         """
