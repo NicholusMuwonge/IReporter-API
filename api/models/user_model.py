@@ -17,7 +17,9 @@ class User:
         self.user_password = user_password
         self.user_id = None
 
-    def post_user(self, user_name=None, email=None, user_password=None):
+    def post_user(
+        self, user_name=None, email=None, user_password=None
+        ):
         """
         Register new user
         :param user_name:

@@ -106,7 +106,8 @@ class Error_message:
         req = request.get_json()
         return jsonify({
             "status": "fail",
-            "error_message": "User email {0} is wrong, It should be in the format (xxxxx@xxxx.xxx).format(req['email']",
+            "error_message": "User email {0} is wrong, \
+            It should be in the format (xxxxx@xxxx.xxx).format(req['email']",
             "data": req
 
         }), 400
@@ -133,7 +134,8 @@ class Error_message:
     def invalid_name():
         return jsonify({
             "status": "fail",
-            "error_message": "A name should consist of only alphabetic characters",
+            "error_message": "A name should consist of \
+            only alphabetic characters",
             "data": request.get_json()
                    }), 400
 
@@ -141,7 +143,8 @@ class Error_message:
     def invalid_input():
         return jsonify({
             "status": "fail",
-            "error_message": "The input here should be a string of characters",
+            "error_message": "The input here should \
+            be a string of characters",
             "data": request.get_json()
                    }), 400
 
@@ -173,17 +176,9 @@ class Error_message:
     def record_status_not_found(status):
         return jsonify({
             "status": "fail",
-            "error_message": "Record status {} not found, only use cancelled as the value".format(status),
+            "error_message": "Record status {} not found, \
+            only use cancelled as the value".format(status),
         }), 404
-
-    # @staticmethod
-    # def parcel_already_cancelled():
-    #     response_object = {
-    #         'status': 'fail',
-    #         'error_message': 'Can not cancel a parcel order twice',
-    #         'data': False
-    #     }
-    #     return jsonify(response_object), 406
 
     @staticmethod
     def status_already_updated(status):

@@ -7,7 +7,9 @@ from api.models.record_model import Record
 from api.Error.responses import Error_message
 from api.utils.verifications import Verification
 from api.models.database import DatabaseConnection
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import (
+    jwt_required, get_jwt_identity
+    )
 # from flasgger import swag_from
 
 
@@ -38,7 +40,9 @@ class Record_logic(MethodView):
         if user_id and admin == "FALSE":
 
             post_data = request.get_json()
-            keys = ("record_title", "record_geolocation", "record_type")
+            keys = (
+                "record_title", "record_geolocation", "record_type"
+                )
 
             if not set(keys).issubset(set(post_data)):
                 return Error_message.missing_fields(keys)
@@ -53,18 +57,10 @@ class Record_logic(MethodView):
             except AttributeError:
                 return Error_message.invalid_data_format()
 
-            if not self.record_title or not self.record_geolocation or not self.record_type :
+            if not self.record_title or not self.record_geolocation or not self.record_type:
                 return Error_message.empty_data_fields()
-            
-            # if not self.record_type == 'redflag' or not self.record_type == 'intervention':
-            #     return Error_message.non_apprpriate_record_type()
-            # elif Verification.check_string_of_numbers(self.receivers_name) or \
-            #         val.check_string_of_numbers(self.pickup_location) or \
-            #         val.check_string_of_numbers(self.destination):
-            #     return Error_message.invalid_data_format()
-            # elif self.weight < 0:
-            #     return Error_message.negative_number()
-
+            elif not isinstance(self.record_geolocation,float):
+                return Error_message.invalid_input()
             new_record = self.record.post_record(self.record_type,self.record_geolocation,self.record_title,str(user_id))
             response_object = {
                 'message': 'Successfully posted a new record ',
@@ -85,7 +81,7 @@ class Record_logic(MethodView):
         user_id = user[0]
         admin = user[3]
 
-        if admin != "FALSE" and user_id:
+        if admin == "FALSE" and user_id:  # changed this authorization, please check it out.
 
             if record_no:
                 return self.data.get_one_record_using_record_no(record_no)

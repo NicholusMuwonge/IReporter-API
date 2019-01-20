@@ -19,11 +19,16 @@ class DatabaseConnection:
                 )
         else:
             
-            self.connection = psycopg2.connect(host="localhost", database="trying", user="postgres",
-            port="5432", password="")
+            self.connection = psycopg2.connect(
+                host="localhost", database="trying", 
+                user="postgres",
+                port="5432", password=""
+                )
         self.connection.autocommit = True
         self.cursor = self.connection.cursor()
-        self.dict_cursor = self.connection.cursor(cursor_factory=RealDictCursor)
+        self.dict_cursor = self.connection.cursor(
+            cursor_factory=RealDictCursor
+            )
 
     def create_tables(self):
         """
@@ -69,7 +74,7 @@ class DatabaseConnection:
             if self.connection is not None:
                 self.connection.close()
 
-    def insert_user(self, user_name, email,user_password):
+    def insert_user(self, user_name, email, user_password):
         """
         add new user to database
         :param user_name:
@@ -77,10 +82,15 @@ class DatabaseConnection:
         :param user_password:
         :return:
         """
-        add_user = """INSERT INTO user_list (user_name, email,user_password)
-                   VALUES ('{0}', '{1}', '{2}');""".format(user_name, email, user_password)
+        add_user = """INSERT INTO user_list(user_name, email, user_password)
+                   VALUES ('{0}', '{1}', '{2}');""".format(
+                       user_name, email, 
+                       user_password
+                       )
         self.cursor.execute(add_user)
-        return jsonify({'message':'user_created successfuly'})
+        return jsonify({
+            'message':'user_created successfuly'
+            })
 
     def find_user_by_username(self, user_name):
         """
@@ -89,7 +99,9 @@ class DatabaseConnection:
         :return:
         """
 
-        name = "SELECT * FROM user_list WHERE user_name ='{}'".format(user_name)
+        name = "SELECT * FROM user_list WHERE user_name ='{}'".format(
+            user_name
+            )
         self.cursor.execute(name)
         username_returned = self.cursor.fetchone()
         return username_returned
@@ -117,7 +129,9 @@ class DatabaseConnection:
         check_email = self.cursor.fetchone()
         return check_email
 
-    def post_record(self, record_title,record_geolocation,record_type, user_id):
+    def post_record(self, 
+        record_title, record_geolocation, 
+        record_type, user_id):
         """
         insert record details into the table records
         :param record_title:
@@ -127,8 +141,13 @@ class DatabaseConnection:
         :param user_id:
         :return:
         """
-        record_posted = """INSERT INTO records (record_title,record_geolocation,record_type, user_id)
-                    VALUES ('{0}', '{1}', '{2}', '{3}');""".format(record_title,record_geolocation,record_type, user_id)
+        record_posted = """INSERT INTO records (
+            record_title, record_geolocation, record_type, user_id
+            )
+                    VALUES ('{0}', '{1}', '{2}', '{3}');""".format(
+                        record_title, record_geolocation, 
+                        record_type, user_id
+                        )
         self.cursor.execute(record_posted)
         return ('created')
 
@@ -159,30 +178,38 @@ class DatabaseConnection:
         :param user_id:
         :return:
         """
-        user_records = "SELECT * FROM records WHERE user_id ='{}'".format(user_id)
+        user_records = "SELECT * FROM records WHERE user_id ='{}'".format(
+            user_id
+            )
         self.dict_cursor.execute(user_records)
         get_records = self.dict_cursor.fetchall()
         return jsonify(get_records)
 
-    def update_record_geolocation(self,record_geolocation,record_no):
+    def update_record_geolocation(self,
+        record_geolocation, record_no):
         """
         user updates a specific record by adjusting the geolocation figures
         :param record_geolocation:
         :param record_no:
         :return:
         """
-        record_update = "UPDATE records SET record_geolocation = '{}' WHERE record_no = '{}'".format(record_geolocation,record_no)
+        record_update = "UPDATE records SET record_geolocation = '{}' \
+        WHERE record_no = '{}'".format(
+            record_geolocation, record_no
+            )
         self.cursor.execute(record_update)
         return True
 
-    def record_status(self,status,record_no):
+    def record_status(self, status, record_no):
         """
         update the  status of a given record  order
         :param status:
         :param record_no:
         :return:
         """
-        update = "UPDATE records SET status = '{}' WHERE record_no = '{}'".format(status,record_no)
+        update = "UPDATE records SET status = '{}' \
+        WHERE record_no = '{}'".format(
+            status, record_no)
         self.cursor.execute(update)
 
     def change_status(self, status, record_no):
@@ -192,27 +219,18 @@ class DatabaseConnection:
         :param record_no:
         :return:
         """
-        update = """UPDATE records SET status = '{}' WHERE record_no = '{}';""".format(status,record_no)
+        update = """UPDATE records SET status = '{}' \
+        WHERE record_no = '{}';""".format(status, record_no)
         self.cursor.execute(update)
         return True
 
-    # def update_(self, present_location,  record_no):
-    #     """
-    #     update the present location of a record  order
-    #     :param present_location:
-    #     :param record_no:
-    #     :return:
-    #     """
-    #     update = """UPDATE records SET present_location = '{}' WHERE record_no = '{}';""".format(present_location,
-    #                                                                                              record_no)
-    #     self.cursor.execute(update)
-    def check_records_approved(self,status):
+    def check_records_approved(self, status):
         """
         get all records that have been approved by the adminstrator
         :param status:
         :return:
         """
-        records="""(SELECT * FROM records WHERE status='Approved')"""
+        records="""(SELECT * FROM records WHERE status = 'Approved')"""
         self.cursor.execute(records)
         returned_records=self.cursor.fetchall()
         return returned_records
@@ -223,9 +241,10 @@ class DatabaseConnection:
         :param status:
         :return:
         """
-        records="""(SELECT * FROM records WHERE status='Cancelled')"""
+        records = """(SELECT * FROM records \
+        WHERE status='Cancelled')"""
         self.cursor.execute(records)
-        returned_records=self.cursor.fetchall()
+        returned_records = self.cursor.fetchall()
         return returned_records
 
     def delete_record(self, record_no):
@@ -234,19 +253,25 @@ class DatabaseConnection:
         :param record_no:
         :return:
         """
-        records="DELETE FROM records WHERE record_no='{}'".format(record_no)
+        records="DELETE FROM records \
+        WHERE record_no = '{}'".format(record_no)
         delete=self.cursor.execute(records)
         if delete:
-            return ({"message":"item successfully deleted"})
+            return ({
+                "message":"item successfully deleted"
+                })
         else:
-            return ({'message':'please try again or item not found'})
+            return ({
+                'message':'please try again or item not found'
+                })
 
     def check_admin(self):
         """
         method to set admin to true which gives a user admin privileges.
         :return:
         """
-        self.cursor.execute("UPDATE user_list SET admin = 'TRUE' WHERE user_id = 1")
+        self.cursor.execute("UPDATE user_list\
+        SET admin = 'TRUE' WHERE user_id = 1")
 
 
 DatabaseConnection().create_tables()
