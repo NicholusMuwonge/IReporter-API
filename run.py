@@ -24,7 +24,7 @@ def admin():
 
 @app.route('/')
 def index():
-    return 'Welcome dear concerned citizen'
+    return jsonify({'message': 'Welcome dear concerned citizen'})
 
 
 if __name__ == '__main__':
