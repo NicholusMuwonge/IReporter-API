@@ -10,13 +10,17 @@ class DatabaseConnection:
 
     def __init__(self):
 
-        if os.getenv("HEROKU_ENV") == 'heroku_database':
+        if os.getenv("APP_CONFIG") == 'development':
             self.connection = psycopg2.connect(
-                host="ec2-54-225-227-125.compute-1.amazonaws.com", database="d95nn0mi29nlqj", user="mretfseraxhfos",
-                port="5432", password="50f7e8f2d88a9fd05fe86691b7ae23d2529577ed0bb1a10ab6a6154581f404a3")
+                host="ec2-54-225-227-125.compute-1.amazonaws.com", 
+                database="d95nn0mi29nlqj", user="mretfseraxhfos",
+                port="5432", 
+                password="50f7e8f2d88a9fd05fe86691b7ae23d2529577ed0bb1a10ab6a6154581f404a3",
+                sslmode="require"
+                )
         else:
             
-            self.connection = psycopg2.connect(host="localhost", database="trying", user="postgres",
+            self.connection = psycopg2.connect(host="localhost", database="db_test", user="postgres",
             port="5432", password="")
             self.connection.autocommit = True
             self.cursor = self.connection.cursor()
