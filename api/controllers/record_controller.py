@@ -81,7 +81,7 @@ class Record_logic(MethodView):
         user_id = user[0]
         admin = user[3]
 
-        if admin == "FALSE" and user_id:  # changed this authorization, please check it out.
+        if admin ==("FALSE" or "TRUE") and user_id:  # changed this authorization, please check it out.
 
             if record_no:
                 return self.data.get_one_record_using_record_no(record_no)
